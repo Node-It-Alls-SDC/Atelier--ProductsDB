@@ -1,0 +1,30 @@
+{
+  "name": "atelier--productsdb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "server-dev": "npx nodemon --watch server server/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Node-It-Alls-SDC/Atelier--ProductsDB.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Node-It-Alls-SDC/Atelier--ProductsDB/issues"
+  },
+  "homepage": "https://github.com/Node-It-Alls-SDC/Atelier--ProductsDB#readme",
+  "dependencies": {
+    "express": "^4.21.2",
+    "mongoose": "^8.10.0",
+    "node": "^20.18.3",
+    "save-dev": "^0.0.1-security"
+  },
+  "devDependencies": {
+    "csv-parser": "^3.2.0",
+    "nodemon": "^3.1.9"
+  }
+}
