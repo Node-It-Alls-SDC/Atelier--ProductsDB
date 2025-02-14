@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
-// const photosSchema = new mongoose.Schema({
-//   thumbnail_url: String,
-//   url: String
-// }, {_id: false});
+const photosSchema = new mongoose.Schema({
+  thumbnail_url: String,
+  url: String
+}, {_id: false});
 
 // const skusSchema = new mongoose.Schema({
 //   quantity: Number,
@@ -20,6 +20,7 @@ const stylesSchema = new mongoose.Schema({
   },
   original_price: Number,
   'default?': Number,
+  photos: [photosSchema]
 });
 
 stylesSchema.index({product_id: 1});

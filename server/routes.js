@@ -1,5 +1,6 @@
 const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
 
 // MODELS
 const Product = require('../db/models/product.js');
@@ -10,77 +11,77 @@ const Skus = require('../db/models/skus.js');
 const Photos = require('../db/models/photos.js');
 
 
-
 const getProducts = async (req, res) => {
-  const queryId = req.params.product_id;
-  const product = Product.find({id: queryId})
-    .then((results) => {
-      const buildProduct = {
-        id: results[0].id,
-        name: results[0].name,
-        slogan: results[0].slogan,
-        description: results[0].description,
-        category: results[0].category,
-        default_price: results[0].default_price
+  const queryId = Number(req.params.product_id);
+  let product = await Product.aggregate([
+    {
+      $match: { id: queryId }
+    },
+    {
+      $lookup: {
+        from: 'features',
+        localField: 'id',
+        foreignField: 'product_id',
+        as: 'features'
       }
-      Features.find({product_id: queryId})
-        .then((features) => {
-          const finalProduct = Object.assign({}, buildProduct, { features: features });
-          res.send(finalProduct);
-        })
-    })
-    .catch((err) => console.error(err));
+    }
+  ])
+  res.send(product[0]);
 }
 
 const getStyles = async (req, res) => {
-  const queryId = req.params.product_id;
-  const styles = { product_id: queryId };
-  const tempStyles = [];
-  const findStyles = Styles.find({id: queryId})
-    .then((results) => {
-      const promises = results.map((style) => ({
-        style_id: style.id,
-        name: style.name,
-        original_price: style.original_price,
-        sale_price: style.sale_price,
-        'default?': style['default?']
-      }))
+  const queryId = Number(req.params.product_id);
 
-      Promise.all(promises).then((results) => {
-        tempStyles = results;
-      })
-    })
-    .catch((err) => console.error(err));
+  let styles = await Styles.aggregate([
+    {
+      $match: { product_id: queryId }
+    },
+    {
+      $project: { _id: 0, __v: 0}
+    },
+    {
+      $lookup: {
+        from: 'photos',
+        localField: 'id',
+        foreignField: 'styleId',
+        as: 'photos'
+      }
+    },
+    {
+      $lookup: {
+        from: 'skus',
+        localField: 'id',
+        foreignField: 'styleId',
+        as: 'skus'
+      }
+    },
+    {
+      $addFields: {
+        skus: {
+          $arrayToObject: {
+            $map: {
+              input: '$skus',
+              as: 'sku',
+              in: [
+                { $toString: '$$sku.id' },
+                {
+                  quantity: '$$sku.quantitiy',
+                  size: '$$sku.size'
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  ]);
 
-  const photoPromises = tempStyles.map((style) => {
-    const photos = Photos.find({styleId: style.style_id}, {_id: 0, thumbnail_url: 1, url: 1})
-      .then((results) => {
-        style.photos = results;
-      })
-      .catch((err) => console.error(err));
-  })
+  let result = {
+    product_id: JSON.stringify(queryId),
+    results: styles
+  };
 
-  Promise.all(photoPromises).then((results) => {
-    tempStyles = results;
-  });
-
-  const tempSkus = {};
-  const skusPromises = tempStyles.map((style) => {
-    const skus = Skus.find({styleId: style.style_id}, {_id: 0, quantity: 1, size: 1})
-      .then((results) => {
-        results.forEach((sku) => {
-          tempSkus[JSON.stringify(sku.id)] = sku;
-        })
-        style.skus = tempSkus;
-      })
-      .catch((err) => console.error(err));
-  })
-
-  Promise.all(skusPromises).then((results) => {
-    tempStyles = results;
-    console.log(tempStyles);
-  });
-  res.send(tempStyles);
+  res.send(result);
 }
 
-module.exports = { getProducts };
+module.exports = { getProducts, getStyles };

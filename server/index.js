@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const { handleETL } = require('../utils/handleETL.js');
-const { getProducts } = require('./routes.js');
+const { getProducts, getStyles } = require('./routes.js');
 
 const app = express();
 const PORT = 3000;
@@ -18,6 +18,7 @@ app.get('/etl', handleETL);
 
 // ROUTES
 app.get('/products/:product_id', getProducts);
+app.get('/products/:product_id/styles', getStyles);
 
 app.listen(PORT, () => {
   console.log(`currently listening on port ${PORT}`);
