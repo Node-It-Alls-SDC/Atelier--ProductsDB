@@ -2,7 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const { handleETL } = require('../utils/handleETL.js');
-const { getProducts, getStyles } = require('./routes.js');
+const { getProducts, getStyles, getProductList } = require('./routes.js');
 
 const app = express();
 const PORT = 3000;
@@ -17,6 +17,7 @@ mongoose.connect('mongodb://localhost:27017/products')
 app.get('/etl', handleETL);
 
 // ROUTES
+app.get('/products', getProductList);
 app.get('/products/:product_id', getProducts);
 app.get('/products/:product_id/styles', getStyles);
 

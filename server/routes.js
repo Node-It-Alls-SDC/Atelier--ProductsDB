@@ -84,4 +84,21 @@ const getStyles = async (req, res) => {
   res.send(result);
 }
 
-module.exports = { getProducts, getStyles };
+const getProductList = async (req, res) => {
+  const page = Number(req.query.page) || 1;
+  const count = Number(req.query.count) || 5;
+
+  const startId = (page - 1) * count;
+
+  const list = await Product.find({
+    id: {$gte: startId, $lte: startId + count}
+  }, {
+    _id: 0,
+    updated_at: 0,
+    __v: 0
+  });
+
+  res.send(list);
+}
+
+module.exports = { getProducts, getStyles, getProductList };
