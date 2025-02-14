@@ -101,4 +101,12 @@ const getProductList = async (req, res) => {
   res.send(list);
 }
 
-module.exports = { getProducts, getStyles, getProductList };
+const getRelated = async (req, res) => {
+  const queryId = req.params.product_id;
+
+  const related = await Related.find({ current_product_id: queryId }, { _id: 0, related_product_id: 1 });
+  const result = related.map((item) => item.related_product_id);
+  res.send(result);
+}
+
+module.exports = { getProducts, getStyles, getProductList, getRelated };
