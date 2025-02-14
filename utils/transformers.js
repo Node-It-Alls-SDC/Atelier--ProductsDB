@@ -67,4 +67,13 @@ const transformCart = (data) => {
   }))
 };
 
-module.exports = { transformProduct, transformFeatures, transformRelated, transformSkus, transformStyles, transformCart };
+const transformPhotos = (data) => {
+  return data.map( row => ({
+    id: parseInt(row['id']),
+    styleId: parseInt(row['styleId']),
+    url: row['url'],
+    thumbnail_url: row['thumbnail_url']
+  }))
+};
+
+module.exports = { transformProduct, transformFeatures, transformRelated, transformSkus, transformStyles, transformCart, transformPhotos };

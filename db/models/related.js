@@ -6,6 +6,12 @@ const relatedSchema = new mongoose.Schema({
   related_product_id: Number
 });
 
+relatedSchema.index({current_product_id: 1});
+
 const Related = mongoose.model('Related', relatedSchema);
+
+Related.createIndexes()
+  .then(() => console.log('Related Indexes Created'))
+  .catch((err) => console.error(err));
 
 module.exports = Related;

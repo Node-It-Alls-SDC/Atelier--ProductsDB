@@ -4,6 +4,7 @@ const Related = require('../db/models/related.js');
 const Skus = require('../db/models/skus.js');
 const Styles = require('../db/models/styles.js');
 const Cart = require('../db/models/cart.js');
+const Photos = require('../db/models/photos.js');
 
 
 const batchInsert = async (model, data) => {
@@ -17,6 +18,7 @@ const batchInsert = async (model, data) => {
     if (batch.length === batchSize || i === data.length - 1) {
       try {
         await model.insertMany(batch);
+        console.log(`Batch ${batchCount + 1} Inserted Successfully`);
         batch = [];
         batchCount++;
       } catch (err) {
@@ -89,4 +91,14 @@ const loadCart = async (data) => {
   }
 };
 
-module.exports = { loadProduct, loadFeatures, loadRelated, loadSkus, loadStyles, loadCart };
+const loadPhotos = async (data) => {
+  try {
+    await batchInsert(Photos, data);
+    console.log('Photos loaded into DB')
+  }
+  catch (err) {
+    console.error('Error loading data: ', err);
+  }
+};
+
+module.exports = { loadProduct, loadFeatures, loadRelated, loadSkus, loadStyles, loadCart, loadPhotos };
