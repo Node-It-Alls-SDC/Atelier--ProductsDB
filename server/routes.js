@@ -40,12 +40,9 @@ const getStyles = async (req, res) => {
       $match: { product_id: queryId }
     },
     {
-      $project: { _id: 0, __v: 0}
-    },
-    {
       $lookup: {
         from: 'photos',
-        localField: 'id',
+        localField: 'style_id',
         foreignField: 'styleId',
         as: 'photos'
       }
@@ -53,7 +50,7 @@ const getStyles = async (req, res) => {
     {
       $lookup: {
         from: 'skus',
-        localField: 'id',
+        localField: 'style_id',
         foreignField: 'styleId',
         as: 'skus'
       }
@@ -68,7 +65,7 @@ const getStyles = async (req, res) => {
               in: [
                 { $toString: '$$sku.id' },
                 {
-                  quantity: '$$sku.quantitiy',
+                  quantity: '$$sku.quantity',
                   size: '$$sku.size'
                 }
               ]
@@ -76,6 +73,9 @@ const getStyles = async (req, res) => {
           }
         }
       }
+    },
+    {
+      $project: { _id: 0, __v: 0, product_id: 0, 'photos._id': 0, 'photos.id': 0, 'photos.styleId': 0, 'photos.__v': 0}
     }
   ]);
 

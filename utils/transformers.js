@@ -47,12 +47,12 @@ const transformStyles = (data) => {
     }
 
     const item = {
-      id: parseInt(row['id']),
+      style_id: parseInt(row['id']),
       product_id: parseInt(row['productId']),
       name: row['name'],
       sale_price: salePrice,
       original_price: parseInt(row['original_price']),
-      'deafult?': parseInt(row['default_style'])
+      'default?': parseInt(row['default_style'])
     }
     return item;
   })
