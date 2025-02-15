@@ -29,7 +29,7 @@ const getProducts = async (req, res) => {
       $project: { _id: 0, updated_at: 0, __v: 0, 'features._id' : 0, 'features.id': 0, 'features.product_id': 0, 'features.__v': 0}
     }
   ])
-  product[0] === undefined ? res.sendStatus(404) : res.send(product[0])
+  product[0] === undefined ? res.status(404).send('Invalid Product ID') : res.send(product[0])
 }
 
 const getStyles = async (req, res) => {
@@ -83,7 +83,7 @@ const getStyles = async (req, res) => {
     product_id: JSON.stringify(queryId),
     results: styles
   };
-  result.results[0] === undefined ? res.sendStatus(404) : res.send(result);
+  result.results[0] === undefined ? res.status(404).send('Invalid Product ID') : res.send(result);
 }
 
 const getProductList = async (req, res) => {
@@ -98,14 +98,14 @@ const getProductList = async (req, res) => {
     updated_at: 0,
     __v: 0
   });
-  res.send(list);
+  list.length ? res.send(list) : res.status(404).send('Invalid Page and/or Count');
 }
 
 const getRelated = async (req, res) => {
   const queryId = req.params.product_id;
   const related = await Related.find({ current_product_id: queryId }, { _id: 0, related_product_id: 1 });
   const result = related.map((item) => item.related_product_id);
-  result[0] === undefined ? res.sendStatus(404) : res.send(result);
+  result[0] === undefined ? res.status(404).send('Invalid Product ID') : res.send(result);
 }
 
 module.exports = { getProducts, getStyles, getProductList, getRelated };
