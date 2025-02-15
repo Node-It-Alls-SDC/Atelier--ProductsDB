@@ -28,7 +28,6 @@ stylesSchema.index({product_id: 1});
 const Styles = mongoose.model('Styles', stylesSchema);
 
 Styles.createIndexes()
-  .then(() => console.log('Styles Indexes Created'))
   .catch((err) => console.error(err));
 
 module.exports = Styles;

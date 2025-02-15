@@ -52,7 +52,7 @@ const transformStyles = (data) => {
       name: row['name'],
       sale_price: salePrice,
       original_price: parseInt(row['original_price']),
-      default_style: parseInt(row['default_style'])
+      'deafult?': parseInt(row['default_style'])
     }
     return item;
   })

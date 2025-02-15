@@ -24,9 +24,12 @@ const getProducts = async (req, res) => {
         foreignField: 'product_id',
         as: 'features'
       }
+    },
+    {
+      $project: { _id: 0, updated_at: 0, __v: 0, 'features._id' : 0, 'features.id': 0, 'features.product_id': 0, 'features.__v': 0}
     }
   ])
-  res.send(product[0]);
+  product[0] === undefined ? res.sendStatus(404) : res.send(product[0])
 }
 
 const getStyles = async (req, res) => {
@@ -80,14 +83,12 @@ const getStyles = async (req, res) => {
     product_id: JSON.stringify(queryId),
     results: styles
   };
-
-  res.send(result);
+  result.results[0] === undefined ? res.sendStatus(404) : res.send(result);
 }
 
 const getProductList = async (req, res) => {
   const page = Number(req.query.page) || 1;
   const count = Number(req.query.count) || 5;
-
   const startId = (page - 1) * count;
 
   const list = await Product.find({
@@ -97,16 +98,14 @@ const getProductList = async (req, res) => {
     updated_at: 0,
     __v: 0
   });
-
   res.send(list);
 }
 
 const getRelated = async (req, res) => {
   const queryId = req.params.product_id;
-
   const related = await Related.find({ current_product_id: queryId }, { _id: 0, related_product_id: 1 });
   const result = related.map((item) => item.related_product_id);
-  res.send(result);
+  result[0] === undefined ? res.sendStatus(404) : res.send(result);
 }
 
 module.exports = { getProducts, getStyles, getProductList, getRelated };

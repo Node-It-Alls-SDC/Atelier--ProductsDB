@@ -12,7 +12,6 @@ photosSchema.index({styleId: 1});
 const Photos = mongoose.model('Photos', photosSchema)
 
 Photos.createIndexes()
-  .then(() => console.log('Photos Indexes Created'))
   .catch((err) => console.error(err));
 
 module.exports = Photos;

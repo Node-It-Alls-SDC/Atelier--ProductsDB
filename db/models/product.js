@@ -16,7 +16,6 @@ productSchema.index({id: 1});
 const Product = mongoose.model('Product', productSchema);
 
 Product.createIndexes()
-  .then(() => console.log('Product Indexes Created'))
   .catch((err) => console.error(err));
 
 
