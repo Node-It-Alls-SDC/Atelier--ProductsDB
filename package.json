@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "server-dev": "npx nodemon --watch server server/index.js",
-    "unit-test": "mocha tests/unit.test.js"
+    "server-etl": "node --max-old-space-size=8192 server/index.js",
+    "unit-test": "mocha tests/unit.test.js",
+    "etl": "node --max-old-space-size=8192 utils/handleETL.js"
   },
   "repository": {
     "type": "git",

@@ -62,4 +62,6 @@ const handleETL = async (req, res) => {
   }
 }
 
+// handleETL();
+
 module.exports = { handleETL };
