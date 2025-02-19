@@ -8,11 +8,17 @@ const app = express();
 const PORT = 3000;
 
 app.use(express.json());
+app.use(path.join(__dirname, './public'));
 
 mongoose.connect('mongodb://18.116.88.215:27017/products')
   .then(() => console.log('connected to products DB'))
   .catch(() => console.error('Failed to connect to DB'))
 
+
+// LOADER.IO VERIFICATION
+app.get('/loaderio-c1a488039f65e5baf25055a047e5caf6.txt', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'loaderio-c1a488039f65e5baf25055a047e5caf6.txt'));
+});
 
 // ROUTES
 app.get('/products', getProductList);
