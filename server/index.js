@@ -13,10 +13,6 @@ mongoose.connect('mongodb://18.116.88.215:27017/products')
   .then(() => console.log('connected to products DB'))
   .catch(() => console.error('Failed to connect to DB'))
 
-// LOADER.IO VERIFICATION TEST
-app.get('/loaderio-6362038af9670d9acd823ff4ae1bc4cf.txt', (req, res) => {
-  res.send('loaderio-6362038af9670d9acd823ff4ae1bc4cf');
-});
 
 // ROUTES
 app.get('/products', getProductList);
