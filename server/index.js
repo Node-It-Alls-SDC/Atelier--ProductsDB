@@ -10,7 +10,7 @@ const PORT = 3000;
 app.use(express.json());
 app.use(express.static(path.join(__dirname, './public')));
 
-mongoose.connect('mongodb://18.116.88.215:27017/products')
+mongoose.connect('mongodb://3.135.221.100:27017/products')
   .then(() => console.log('connected to products DB'))
   .catch(() => console.error('Failed to connect to DB'))
 
