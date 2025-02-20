@@ -16,8 +16,8 @@ mongoose.connect('mongodb://18.116.88.215:27017/products')
 
 
 // LOADER.IO VERIFICATION
-app.get('/loaderio-c1a488039f65e5baf25055a047e5caf6.txt', (req, res) => {
-  res.sendFile(path.join(__dirname, './public', 'loaderio-c1a488039f65e5baf25055a047e5caf6.txt'));
+app.get('/loaderio-be33675596a288215fca02c84d2d56d8.txt', (req, res) => {
+  res.sendFile(path.join(__dirname, './public', 'loaderio-be33675596a288215fca02c84d2d56d8.txt'));
 });
 
 // ROUTES
